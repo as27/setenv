@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strings"
 )
 
@@ -14,6 +15,17 @@ type Env struct {
 }
 
 var readFile = ioutil.ReadFile
+
+// SetEnv takes []Env and sets all entries
+func SetEnv(envs []Env) error {
+	for _, e := range envs {
+		err := os.Setenv(e.Key, e.Value)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
 
 // ParseFile takes a filename as input and returns the values
 // as a slice.
