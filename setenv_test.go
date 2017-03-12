@@ -1,6 +1,7 @@
 package setenv
 
 import (
+	"os"
 	"reflect"
 	"testing"
 )
@@ -11,6 +12,11 @@ MY_VAR=ABCDE
 TEST=ab123
 
 `
+var envVars = []Env{
+	Env{"VAR1", "123"},
+	Env{"MY_VAR", "ABCDE"},
+	Env{"TEST", "ab123"},
+}
 
 func mockReadFile(filename string) ([]byte, error) {
 	return []byte(inFile), nil
@@ -67,13 +73,23 @@ func TestParseLine(t *testing.T) {
 	}
 }
 func TestParseFile(t *testing.T) {
-	expect := []Env{
-		Env{"VAR1", "123"},
-		Env{"MY_VAR", "ABCDE"},
-		Env{"TEST", "ab123"},
-	}
+	expect := envVars
 	got, _ := ParseFile("")
 	if !reflect.DeepEqual(got, expect) {
 		t.Errorf("-----\nGot: %#v\nExp: %#v", got, expect)
 	}
+}
+
+func TestSetEnv(t *testing.T) {
+	err := SetEnv(envVars)
+	if err != nil {
+		t.Error("Got an error")
+	}
+	for _, e := range envVars {
+		got := os.Getenv(e.Key)
+		if got != e.Value {
+			t.Errorf("Got: %s\nExp: %s", got, e.Value)
+		}
+	}
+
 }

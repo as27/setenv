@@ -16,6 +16,19 @@ type Env struct {
 
 var readFile = ioutil.ReadFile
 
+// File sets the env variables by a given file
+func File(filename string) error {
+	envs, err := ParseFile(filename)
+	if err != nil {
+		return err
+	}
+	err = SetEnv(envs)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // SetEnv takes []Env and sets all entries
 func SetEnv(envs []Env) error {
 	for _, e := range envs {

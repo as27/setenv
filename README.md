@@ -26,6 +26,6 @@ You can load the file inside your app. The best part would be the init() functio
 
 ```go
 func init(){
-    setenv.ParseFile(".setenv")
+    setenv.File(".setenv")
 }
 ```
