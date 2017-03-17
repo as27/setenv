@@ -1,3 +1,5 @@
+[![GoDoc](https://godoc.org/github.com/as27/setenv?status.svg)](https://godoc.org/github.com/as27/setenv)
+
 # setenv
 Simple add some env variables
 
